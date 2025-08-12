@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregunta {{ game_session.current_question + 1 }} - Trivia de Películas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Pregunta {{ game_session.current_question + 1 }} de {{ game_session.num_phrases }}</h1>
+            <div class="game-info">
+                <p><strong>Jugador:</strong> {{ game_session.username }}</p>
+                <p><strong>Puntuación actual:</strong> {{ game_session.score }}/{{ game_session.current_question }}</p>
+            </div>
+        </header>
+        
+        <main>
+            <section class="question-section">
+                <div class="phrase-container">
+                    <h2>¿A qué película pertenece esta frase?</h2>
+                    <div class="phrase">
+                        <blockquote>"{{ question.phrase }}"</blockquote>
+                    </div>
+                </div>
+                
+                <div class="options-container">
+                    <form action="{{ url_for('responder') }}" method="POST">
+                        {% for option in question.options %}
+                            <div class="option-item">
+                                <input type="radio" id="option_{{ loop.index }}" name="selected_movie" 
+                                       value="{{ option }}" required>
+                                <label for="option_{{ loop.index }}" class="option-label">
+                                    {{ option }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">🎯 Responder</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            
+            <section class="navigation">
+                <a href="{{ url_for('reiniciar') }}" class="btn btn-secondary">🔄 Reiniciar Juego</a>
+                <a href="{{ url_for('index') }}" class="btn btn-info">🏠 Volver al Inicio</a>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 Trivia de Películas - Programación Avanzada</p>
+        </footer>
+    </div>
+</body>
+</html>

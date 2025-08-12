@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Películas - Trivia de Películas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Lista de Películas Disponibles</h1>
+            <p>Total de películas: {{ movies|length }}</p>
+        </header>
+        
+        <main>
+            <section class="movies-list">
+                {% if movies %}
+                    <div class="movies-grid">
+                        {% for movie in movies %}
+                            <div class="movie-item">
+                                <span class="movie-index">{{ loop.index }}</span>
+                                <span class="movie-title">{{ movie }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-movies">
+                        <p>No hay películas disponibles en este momento.</p>
+                    </div>
+                {% endif %}
+            </section>
+            
+            <section class="navigation">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">🏠 Volver al Inicio</a>
+                <a href="{{ url_for('resultados_historicos') }}" class="btn btn-info">🏆 Ver Resultados</a>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 Trivia de Películas - Programación Avanzada</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados Históricos - Trivia de Películas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏆 Resultados Históricos</h1>
+            <p>Historial de todas las partidas jugadas con análisis gráfico</p>
+        </header>
+        
+        <main>
+            <section class="results-section">
+                {% if games %}
+                    <!-- Gráficas -->
+                    <div class="charts-section">
+                        <h2>📊 Análisis Gráfico de Resultados</h2>
+                        
+                        <!-- Gráfica de líneas -->
+                        <div class="chart-container">
+                            <h3>📈 Evolución de Aciertos y Desaciertos por Fecha</h3>
+                            {% if line_chart_url %}
+                                <img src="{{ line_chart_url }}" alt="Gráfica de líneas" class="chart-image">
+                                <p class="chart-description">
+                                    Esta gráfica muestra la evolución temporal de los aciertos y desaciertos 
+                                    a lo largo del tiempo, permitiendo identificar tendencias y patrones 
+                                    en el rendimiento de los jugadores.
+                                </p>
+                            {% else %}
+                                <p class="no-chart">No hay suficientes datos para generar la gráfica de líneas.</p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Gráfica circular -->
+                        <div class="chart-container">
+                            <h3>🥧 Distribución Total de Aciertos y Desaciertos</h3>
+                            {% if pie_chart_url %}
+                                <img src="{{ pie_chart_url }}" alt="Gráfica circular" class="chart-image">
+                                <p class="chart-description">
+                                    Esta gráfica circular muestra la distribución porcentual total de 
+                                    aciertos versus desaciertos acumulados por todos los jugadores.
+                                </p>
+                            {% else %}
+                                <p class="no-chart">No hay suficientes datos para generar la gráfica circular.</p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Botones de descarga -->
+                        <div class="download-section">
+                            <h3>📥 Descargar Reporte Completo</h3>
+                            <p>Descarga un reporte PDF completo con todas las gráficas y estadísticas detalladas.</p>
+                            {% if pdf_report_url %}
+                                <a href="{{ pdf_report_url }}" class="btn btn-success" download>
+                                    📄 Descargar Reporte PDF
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('generar_reporte_pdf') }}" class="btn btn-success">
+                                    🔄 Generar y Descargar Reporte PDF
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Tabla de resultados -->
+                    <div class="results-table">
+                        <h2>📋 Tabla de Resultados</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Jugador</th>
+                                    <th>Puntuación</th>
+                                    <th>Frases</th>
+                                    <th>Fecha y Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for game in games %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ game.username }}</td>
+                                        <td class="score">{{ game.score }}</td>
+                                        <td>{{ game.num_phrases }}</td>
+                                        <td>{{ game.start_time }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Estadísticas -->
+                    <div class="stats-summary">
+                        <h3>📈 Estadísticas Generales</h3>
+                        <ul>
+                            <li><strong>Total de partidas:</strong> {{ games|length }}</li>
+                            <li><strong>Total de jugadores únicos:</strong> {{ games|map(attribute='username')|unique|list|length }}</li>
+                            {% if games %}
+                                {% set total_phrases = games|sum(attribute='num_phrases') %}
+                                <li><strong>Total de frases respondidas:</strong> {{ total_phrases }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% else %}
+                    <div class="no-results">
+                        <h3>No hay resultados históricos</h3>
+                        <p>¡Sé el primero en jugar una partida para ver las gráficas y estadísticas!</p>
+                    </div>
+                {% endif %}
+            </section>
+            
+            <section class="navigation">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">🏠 Volver al Inicio</a>
+                <a href="{{ url_for('listar_peliculas') }}" class="btn btn-secondary">📋 Ver Películas</a>
+                {% if games %}
+                    <a href="{{ url_for('actualizar_graficas') }}" class="btn btn-info">🔄 Actualizar Gráficas</a>
+                {% endif %}
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 Trivia de Películas - Programación Avanzada</p>
+        </footer>
+    </div>
+</body>
+</html>

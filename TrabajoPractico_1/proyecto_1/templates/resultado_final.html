@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado Final - Trivia de Películas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏁 ¡Juego Terminado!</h1>
+        </header>
+        
+        <main>
+            <section class="final-result">
+                <div class="player-info">
+                    <h2>Resultado de {{ username }}</h2>
+                    <div class="score-display">
+                        <h3>Puntuación Final:</h3>
+                        <div class="final-score">{{ score }}</div>
+                    </div>
+                </div>
+                
+                <div class="last-question-result">
+                    {% if is_correct %}
+                        <div class="correct-answer">
+                            <h3>🎉 ¡Correcto!</h3>
+                            <p>¡Excelente! Has acertado la última pregunta.</p>
+                        </div>
+                    {% else %}
+                        <div class="incorrect-answer">
+                            <h3>❌ Incorrecto</h3>
+                            <p>La respuesta correcta era: <strong>{{ correct_movie }}</strong></p>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="game-summary">
+                    <h3>Resumen de la Partida:</h3>
+                    <ul>
+                        <li><strong>Jugador:</strong> {{ username }}</li>
+                        <li><strong>Puntuación:</strong> {{ score }}</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="navigation">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">🏠 Volver al Inicio</a>
+                <a href="{{ url_for('resultados_historicos') }}" class="btn btn-info">🏆 Ver Todos los Resultados</a>
+                <a href="{{ url_for('listar_peliculas') }}" class="btn btn-secondary">📋 Ver Películas</a>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 Trivia de Películas - Programación Avanzada</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -3,11 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicación Flask</title>
+    <title>Trivia de Películas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Bienvenido a mi Aplicación Flask</h1>
-    <p>Esta es la página de inicio.</p>
+    <div class="container">
+        <header>
+            <h1>🎬 Trivia de Películas 🎬</h1>
+        </header>
+        
+        <main>
+            <section class="game-description">
+                <h2>¿Cómo jugar?</h2>
+                <p>¡Bienvenido al Trivia de Películas! Te mostraremos frases famosas de películas y tendrás que adivinar a qué película pertenecen.</p>
+                <ul>
+                    <li>Ingresa tu nombre de usuario</li>
+                    <li>Elige cuántas frases quieres responder (mínimo 3)</li>
+                    <li>En cada pregunta verás una frase y 3 opciones de películas</li>
+                    <li>¡Solo una es la correcta!</li>
+                    <li>Al final verás tu puntuación total</li>
+                </ul>
+            </section>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'error' if category == 'error' else 'info' }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <section class="game-form">
+                <form action="{{ url_for('iniciar_juego') }}" method="POST">
+                    <div class="form-group">
+                        <label for="username">Nombre de Usuario:</label>
+                        <input type="text" id="username" name="username" required 
+                               placeholder="Ingresa tu nombre" maxlength="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="num_phrases">Número de Frases:</label>
+                        <input type="number" id="num_phrases" name="num_phrases" 
+                               required min="3" max="100" value="5"
+                               placeholder="Mínimo 3">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">🎮 Iniciar Trivia</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="game-options">
+                <div class="option-buttons">
+                    <a href="{{ url_for('listar_peliculas') }}" class="btn btn-secondary">
+                        📋 Listar Películas
+                    </a>
+                    <a href="{{ url_for('resultados_historicos') }}" class="btn btn-info">
+                        🏆 Ver Resultados Históricos
+                    </a>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 Trivia de Películas - Programación Avanzada</p>
+        </footer>
+    </div>
 </body>
 </html>
