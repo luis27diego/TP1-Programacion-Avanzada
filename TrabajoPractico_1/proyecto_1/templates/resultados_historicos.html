@@ -53,16 +53,11 @@
                         <div class="download-section">
                             <h3>📥 Descargar Reporte Completo</h3>
                             <p>Descarga un reporte PDF completo con todas las gráficas y estadísticas detalladas.</p>
-                            {% if pdf_report_url %}
-                                <a href="{{ pdf_report_url }}" class="btn btn-success" download>
-                                    📄 Descargar Reporte PDF
-                                </a>
-                            {% else %}
-                                <a href="{{ url_for('generar_reporte_pdf') }}" class="btn btn-success">
-                                    🔄 Generar y Descargar Reporte PDF
-                                </a>
-                            {% endif %}
+                            <a href="{{ url_for('generar_reporte_pdf') }}" class="btn btn-success">
+                                📄 Generar y Descargar Reporte PDF
+                            </a>
                         </div>
+
                     </div>
                     
                     <!-- Tabla de resultados -->

@@ -87,12 +87,12 @@ class GameReportPDF:
         table_style = self._create_table_style()
         
         # Título principal
-        title = Paragraph("🎬 Reporte de Trivia de Películas", title_style)
+        title = Paragraph("🎮 Reporte Moderno de Trivia de Películas", title_style)
         story.append(title)
         story.append(Spacer(1, 20))
         
         # Información del reporte
-        report_info = f"Generado el: {datetime.now().strftime('%d/%m/%Y a las %H:%M')}"
+        report_info = f"📅 Generado el: {datetime.now().strftime('%d/%m/%Y a las %H:%M')}"
         info_para = Paragraph(report_info, normal_style)
         story.append(info_para)
         story.append(Spacer(1, 30))
@@ -116,39 +116,40 @@ class GameReportPDF:
         story.append(summary_para)
         story.append(Spacer(1, 30))
         
-        # Gráfica de líneas
+        # Dashboard de Rendimiento
         if charts_paths.get('line_chart') and os.path.exists(charts_paths['line_chart']):
-            subtitle2 = Paragraph("📈 Evolución de Aciertos y Desaciertos por Fecha", subtitle_style)
+            subtitle2 = Paragraph("🎮 Dashboard de Rendimiento por Jugador", subtitle_style)
             story.append(subtitle2)
             
-            line_chart_img = Image(charts_paths['line_chart'], width=7*inch, height=5*inch)
-            story.append(line_chart_img)
+            dashboard_img = Image(charts_paths['line_chart'], width=7*inch, height=5*inch)
+            story.append(dashboard_img)
             story.append(Spacer(1, 20))
             
-            line_chart_desc = Paragraph(
-                "Esta gráfica muestra la evolución temporal de los aciertos y desaciertos "
-                "a lo largo del tiempo, permitiendo identificar tendencias y patrones "
-                "en el rendimiento de los jugadores.",
+            dashboard_desc = Paragraph(
+                "Este dashboard moderno muestra el rendimiento individual de cada jugador "
+                "con barras agrupadas para aciertos y desaciertos, incluyendo un medidor "
+                "circular del rendimiento global y gráficas de tendencias.",
                 normal_style
             )
-            story.append(line_chart_desc)
+            story.append(dashboard_desc)
             story.append(Spacer(1, 30))
         
-        # Gráfica circular
+        # Análisis Circular de Rendimiento
         if charts_paths.get('pie_chart') and os.path.exists(charts_paths['pie_chart']):
-            subtitle3 = Paragraph("🥧 Distribución Total de Aciertos y Desaciertos", subtitle_style)
+            subtitle3 = Paragraph("🎯 Análisis Circular de Rendimiento", subtitle_style)
             story.append(subtitle3)
             
-            pie_chart_img = Image(charts_paths['pie_chart'], width=6*inch, height=5*inch)
-            story.append(pie_chart_img)
+            circular_img = Image(charts_paths['pie_chart'], width=6*inch, height=5*inch)
+            story.append(circular_img)
             story.append(Spacer(1, 20))
             
-            pie_chart_desc = Paragraph(
-                "Esta gráfica circular muestra la distribución porcentual total de "
-                "aciertos versus desaciertos acumulados por todos los jugadores.",
+            circular_desc = Paragraph(
+                "Este análisis circular incluye un donut chart de distribución global, "
+                "gráfico de radar comparativo entre jugadores, barras radiales de rendimiento "
+                "y métricas avanzadas con rankings y análisis de consistencia.",
                 normal_style
             )
-            story.append(pie_chart_desc)
+            story.append(circular_desc)
             story.append(Spacer(1, 30))
         
         # Tabla de resultados recientes
@@ -176,9 +177,28 @@ class GameReportPDF:
         story.append(table)
         story.append(Spacer(1, 30))
         
-        # Estadísticas adicionales
-        subtitle5 = Paragraph("📈 Estadísticas Detalladas", subtitle_style)
+        # Gráficos Adicionales Disponibles
+        subtitle5 = Paragraph("🚀 Gráficos Adicionales Disponibles", subtitle_style)
         story.append(subtitle5)
+        
+        additional_charts_text = """
+        El sistema también puede generar gráficos adicionales avanzados:
+        
+        • 📊 Dashboard Completo: Vista general con múltiples métricas
+        • 🕸️ Gráfico de Radar: Comparativa de rendimiento entre jugadores
+        • 📈 Línea de Tiempo Interactiva: Evolución temporal con heatmap por horas
+        • 🎪 Barras Radiales: Visualización circular del rendimiento
+        
+        Estos gráficos están disponibles en la aplicación web con el tema oscuro moderno.
+        """
+        
+        additional_charts_para = Paragraph(additional_charts_text, normal_style)
+        story.append(additional_charts_para)
+        story.append(Spacer(1, 30))
+        
+        # Estadísticas adicionales
+        subtitle6 = Paragraph("📈 Estadísticas Detalladas", subtitle_style)
+        story.append(subtitle6)
         
         # Calcular estadísticas
         total_phrases = sum(game['num_phrases'] for game in games)

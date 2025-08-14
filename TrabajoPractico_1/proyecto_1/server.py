@@ -189,6 +189,8 @@ def generar_reporte_pdf():
     try:
         # Generar gráficas primero
         charts_paths = game_charts.generate_charts(games)
+        import logging
+        app.logger.info(charts_paths)
         
         # Generar reporte PDF
         pdf_path = pdf_generator.generate_report(games, charts_paths)
@@ -196,7 +198,8 @@ def generar_reporte_pdf():
         if pdf_path and os.path.exists(pdf_path):
             # Enviar archivo para descarga
             return send_file(pdf_path, as_attachment=True, 
-                           download_name=os.path.basename(pdf_path))
+                           download_name=os.path.basename(pdf_path),
+                           cache_timeout=0)
         else:
             flash('Error al generar el reporte PDF.', 'error')
             return redirect(url_for('resultados_historicos'))
